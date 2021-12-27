@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:AvaloniaHangProject.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        x:Class="AvaloniaHangProject.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="GuidedTour.AvaloniaExample"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Design.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <Panel.Styles>
+            <Style Selector="Border">
+                <Setter Property="BorderBrush" Value="#33000000" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+            <Style Selector="StackPanel">
+                <Setter Property="Margin" Value="25" />
+            </Style>
+            <Style Selector="Button">
+                <Setter Property="Foreground" Value="#dbdbdbdb" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+        </Panel.Styles>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+            <Border Name="Window-Panel">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button Content="Open Window Example" Command="{Binding OpenGuidedTourExampleCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Panel>
+</Window>

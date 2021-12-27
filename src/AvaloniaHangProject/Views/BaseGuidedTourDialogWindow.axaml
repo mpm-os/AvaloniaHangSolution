@@ -1,0 +1,35 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="AvaloniaHangProject.Views.BaseGuidedTourDialogWindow"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaChromeHints="NoChrome">
+
+    <Window.Styles>
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{DynamicResource PanelLevel1Brush}"/>
+        </Style>
+
+        <!-- Border and margins styling -->
+        <Style Selector="Window /template/ Border">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style Selector="Window /template/ VisualLayerManager">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style Selector="Window /template/ Border">
+            <Setter Property="BorderBrush" Value="#FFFF9F0F" />
+            <Setter Property="BorderThickness" Value="6" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Margin" Value="-2" />
+        </Style>
+
+        <!-- Functional Styling -->
+        <Style Selector="Window">
+            <Setter Property="CanResize" Value="False"/>
+            <Setter Property="ShowInTaskbar" Value="False"/>
+        </Style>
+    </Window.Styles>
+
+</Window>

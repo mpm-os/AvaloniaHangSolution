@@ -1,0 +1,33 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Company>TestCompany</Company>
+        <Authors>$(Company)</Authors>
+        <Product>Test Project</Product>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+    </ItemGroup>
+
+    <!-- Changes the C# language support to 8.0 if the current MSBuild supports it. Not doing it blindly to allow some 'tools' solutions to still fallback to an older MSBuild if there are no code requirements -->
+	<PropertyGroup Condition="$([System.Version]::Parse($(MSBuildVersion)).CompareTo($([System.Version]::Parse('16.3')))) &gt;= 0">
+        <LangVersion>8.0</LangVersion>
+	</PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Add versions here -->
+        <MicrosoftSourceLinkGitHub>1.0.0</MicrosoftSourceLinkGitHub>
+        <AvaloniaVersion>0.10.11</AvaloniaVersion>
+        <OSNodeNpm>1.1.2</OSNodeNpm>
+    </PropertyGroup>
+
+</Project>
