@@ -22,6 +22,8 @@ namespace AvaloniaHangProject.ViewModels {
                     guidedTourDialogWindow = new BaseGuidedTourDialogWindow(parent) { MinHeight = 100,  MinWidth = 100,};
                     
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
+                    
+                    // This code the task continuation below is just to ilustrate the use case. The bug happen even if we comment these lines.
                     Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
                         Dispatcher.UIThread.InvokeAsync(() => {
                             ((Border)guidedTourDialogWindow.Content).Width = 400;
