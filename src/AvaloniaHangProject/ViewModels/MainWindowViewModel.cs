@@ -24,8 +24,8 @@ namespace AvaloniaHangProject.ViewModels {
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
                     Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
                         Dispatcher.UIThread.InvokeAsync(() => {
-                            ((Border)guidedTourDialogWindow.Content).Width = 500;
-                            ((Border)guidedTourDialogWindow.Content).Height = 500;
+                            ((Border)guidedTourDialogWindow.Content).Width = 400;
+                            ((Border)guidedTourDialogWindow.Content).Height = 400;
                         });
                     });
                     
