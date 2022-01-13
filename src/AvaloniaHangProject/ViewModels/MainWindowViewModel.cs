@@ -1,8 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Threading;
 using AvaloniaHangProject.Views;
 using ReactiveUI;
 
@@ -19,10 +22,17 @@ namespace AvaloniaHangProject.ViewModels {
                     guidedTourDialogWindow = new BaseGuidedTourDialogWindow(parent) { MinHeight = 100,  MinWidth = 100,};
                     
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
-
+                    Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
+                        Dispatcher.UIThread.InvokeAsync(() => {
+                            ((Border)guidedTourDialogWindow.Content).Width = 500;
+                            ((Border)guidedTourDialogWindow.Content).Height = 500;
+                        });
+                    });
+                    
                     innerContent.LayoutUpdated += (sender, args) => {
-                        Debug.WriteLine("MainWindowViewModel#LayoutUpdated");
                         guidedTourDialogWindow.SetDialogStartupLocation();
+                        
+                        Debug.WriteLine("MainWindowViewModel#LayoutUpdated");
                     };
 
                     guidedTourDialogWindow.Content = innerContent;
