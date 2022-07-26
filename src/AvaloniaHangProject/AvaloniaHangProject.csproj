@@ -33,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\BaseGuidedTourDialogWindow.axaml.cs">
+      <Compile Update="Views\DialogWindow.axaml.cs">
         <DependentUpon>BaseGuidedTourDialogWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

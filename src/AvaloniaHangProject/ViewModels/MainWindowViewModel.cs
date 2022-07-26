@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -11,46 +12,40 @@ using ReactiveUI;
 
 namespace AvaloniaHangProject.ViewModels {
     public class MainWindowViewModel : ReactiveObject {
-        private BaseGuidedTourDialogWindow guidedTourDialogWindow;
+        private List<DialogWindow> dialogWindows = new List<DialogWindow>();
+        private int captionsCounter = 0;
 
         public MainWindowViewModel(Window parent) {
             OpenGuidedTourExampleCommand = ReactiveCommand.Create(
                 () => {
-                    guidedTourDialogWindow?.Close();
-
-                    // To fix "Cannot re-show a closed window" we create a new window
-                    guidedTourDialogWindow = new BaseGuidedTourDialogWindow(parent) { MinHeight = 100,  MinWidth = 100,};
-                    
+                    var activeTab = ((MainWindow)parent).GetActiveTab();
+                    var dialogWindow = new DialogWindow(parent, activeTab) { MinHeight = 100,  MinWidth = 100,};
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
-                    
-                    // This code the task continuation below is just to ilustrate the use case. The bug happen even if we comment these lines.
-                    Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
-                        Dispatcher.UIThread.InvokeAsync(() => {
-                            ((Border)guidedTourDialogWindow.Content).Width = 400;
-                            ((Border)guidedTourDialogWindow.Content).Height = 400;
-                        });
-                    });
-                    
-                    innerContent.LayoutUpdated += (sender, args) => {
-                        guidedTourDialogWindow.SetDialogStartupLocation();
-                        
-                        Debug.WriteLine("MainWindowViewModel#LayoutUpdated");
-                    };
 
-                    guidedTourDialogWindow.Content = innerContent;
-                    guidedTourDialogWindow.ShowWindow();
-                    guidedTourDialogWindow.SetDialogStartupLocation();
+
+                    // Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
+                    //     Dispatcher.UIThread.InvokeAsync(() => {
+                    //         // Do something with the window
+                    //     });
+                    // });
+
+                    dialogWindow.Content = innerContent;
+                    dialogWindow.ShowWindow();
+                    dialogWindow.SetDialogStartupLocation();
+
+                    dialogWindows.Add(dialogWindow);
                 }
             );
 
-            CloseGuidedTourExampleCommand = ReactiveCommand.Create(
+
+            AddTabCommand = ReactiveCommand.Create(
                 () => {
-                    guidedTourDialogWindow.Close();
-                }
-            );
+                    ((MainWindow)parent).AddTab(++captionsCounter);
+                });
         }
 
         public ICommand OpenGuidedTourExampleCommand { get; }
-        public ICommand CloseGuidedTourExampleCommand { get; }
+
+        public ICommand AddTabCommand { get; }
     }
 }
