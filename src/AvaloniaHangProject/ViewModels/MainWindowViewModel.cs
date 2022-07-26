@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Threading;
 using AvaloniaHangProject.Views;
 using ReactiveUI;
 
@@ -16,22 +12,18 @@ namespace AvaloniaHangProject.ViewModels {
         private int captionsCounter = 0;
 
         public MainWindowViewModel(Window parent) {
-            OpenGuidedTourExampleCommand = ReactiveCommand.Create(
+            OpenWindowCommand = ReactiveCommand.Create(
                 () => {
                     var activeTab = ((MainWindow)parent).GetActiveTab();
-                    var dialogWindow = new DialogWindow(parent, activeTab) { MinHeight = 100,  MinWidth = 100,};
+                    var dialogWindow = new DialogWindow(parent, activeTab) {
+                        MinHeight = 500,
+                        MinWidth = 500,
+                        Position = new PixelPoint(500, 500)
+                    };
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
-
-
-                    // Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) => {
-                    //     Dispatcher.UIThread.InvokeAsync(() => {
-                    //         // Do something with the window
-                    //     });
-                    // });
 
                     dialogWindow.Content = innerContent;
                     dialogWindow.ShowWindow();
-                    dialogWindow.SetDialogStartupLocation();
 
                     dialogWindows.Add(dialogWindow);
                 }
@@ -44,7 +36,7 @@ namespace AvaloniaHangProject.ViewModels {
                 });
         }
 
-        public ICommand OpenGuidedTourExampleCommand { get; }
+        public ICommand OpenWindowCommand { get; }
 
         public ICommand AddTabCommand { get; }
     }

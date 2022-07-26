@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
 using AvaloniaHangProject.ViewModels;
 
 namespace AvaloniaHangProject.Views {
@@ -28,12 +27,6 @@ namespace AvaloniaHangProject.Views {
 
         private void OnSelectedTabChanged(object sender, SelectionChangedEventArgs e) {
             this.currentTab = ((IControl)e.AddedItems[0]).GetLogicalDescendants().OfType<Button>().FirstOrDefault();
-
-            //var tabItem = e.AddedItems.OfType<TabItem>().FirstOrDefault()?.Content as ITopLevelView;
-
-            //if (tabItem != null) {
-            //contextualDispatcher.Post(() => selectedAggregatorChanged?.Invoke(tabItem), contextualDispatcherFrameId);
-            //}
         }
 
         public Control GetActiveTab() {
@@ -41,13 +34,13 @@ namespace AvaloniaHangProject.Views {
         }
 
         public void AddTab(int index) {
-            var header = new TabHeaderInfo() { AllowClose = true };
+            var header = new TabHeaderInfo();
             header.Caption = "Caption " + index;
 
             var view = new Button() {
                 Name = "view",
                 Content = "Open Window Example",
-                Command = ((MainWindowViewModel)this.DataContext).OpenGuidedTourExampleCommand
+                Command = ((MainWindowViewModel)this.DataContext).OpenWindowCommand
             };
 
             var tab = new TabItem() {

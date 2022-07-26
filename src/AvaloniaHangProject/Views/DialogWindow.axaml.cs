@@ -26,23 +26,6 @@ namespace AvaloniaHangProject.Views {
             AvaloniaXamlLoader.Load(this);
         }
 
-
-        #region Avalonia Properties
-
-        private static readonly StyledProperty<int> OwnerBoundsMarginProperty =
-            AvaloniaProperty.Register<DialogWindow, int>(nameof(OwnerBoundsMargin), defaultValue: 24, inherits: true);
-
-        public int OwnerBoundsMargin {
-            get => GetValue(OwnerBoundsMarginProperty);
-            set => SetValue(OwnerBoundsMarginProperty, value);
-        }
-
-        #endregion
-
-        internal PixelRect DialogRect => new PixelRect(Position, PixelSize.FromSize(Bounds.Size, PlatformImpl?.DesktopScaling ?? 1));
-
-        internal PixelRect OwnerRect => new PixelRect(ParentWindow.Position, PixelSize.FromSize(ParentWindow.Bounds.Size, ParentWindow.PlatformImpl?.DesktopScaling ?? 1));
-
         public Window ParentWindow { get; }
 
         public static IDisposable AddShownEventHandler(Control view, Action action) {
@@ -92,27 +75,6 @@ namespace AvaloniaHangProject.Views {
         protected override void OnClosed(EventArgs e) {
             UnsubscribeTopLevelViewShowHideEvents();
             base.OnClosed(e);
-        }
-
-        public void SetDialogStartupLocation() {
-            if (ParentWindow == null ) {
-                return;
-            }
-
-            if (PlatformImpl == null || !IsInitialized) {
-                throw new Exception("The guided tour window must be shown before setting position.");
-            }
-
-            this.InnerSetDialogStartupLocation();
-        }
-
-        private void InnerSetDialogStartupLocation() {
-            //BottomLeft:
-            this.WindowStartupLocation = WindowStartupLocation.Manual;
-            this.Position = new PixelPoint(
-                x: this.OwnerRect.BottomLeft.X + this.OwnerBoundsMargin,
-                y: this.OwnerRect.BottomLeft.Y - this.OwnerBoundsMargin - this.DialogRect.Height
-            );
         }
     }
 }
