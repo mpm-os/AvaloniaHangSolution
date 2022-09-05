@@ -26,7 +26,7 @@
     <PropertyGroup>
         <!-- Add versions here -->
         <MicrosoftSourceLinkGitHub>1.0.0</MicrosoftSourceLinkGitHub>
-        <AvaloniaVersion>0.10.17</AvaloniaVersion>
+        <AvaloniaVersion>11.0.999-cibuild0023529-beta</AvaloniaVersion>
         <OSNodeNpm>1.1.2</OSNodeNpm>
     </PropertyGroup>
 

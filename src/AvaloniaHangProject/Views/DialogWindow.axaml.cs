@@ -6,7 +6,7 @@ using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 
 namespace AvaloniaHangProject.Views {
-    public class DialogWindow : Window {
+    public class DialogWindow : MainWindow {
         private Control topLevelView;
         private IDisposable[] disposableShowAndHideEventHandlers;
 
@@ -25,6 +25,8 @@ namespace AvaloniaHangProject.Views {
         private void InitializeComponent() {
             AvaloniaXamlLoader.Load(this);
         }
+
+        public bool IsModal { get; private set; }
 
         public Window ParentWindow { get; }
 
@@ -59,6 +61,93 @@ namespace AvaloniaHangProject.Views {
             }
         }
 
+        private void SafeShow(Window ownerWindow = null) {
+            SubscribeTopLevelViewShowHideEvents();
+
+        // if (!dialogConfiguration.IsSticky && topLevelView?.IsVisible() == false) {
+            //     isShowPending = true;
+            //     return;
+            // }
+            //
+            // if (!showCalled) {
+            //     if (IsModal) {
+            //         if (topLevelView != null) {
+            //             var viewNonModalOwnedWindows = GetTopLevelViewOwnedWindows(nonModalWindowsPerView);
+            //             var viewModalOwnedWindows = GetTopLevelViewOwnedWindows(modalWindowsPerView);
+            //             Window directOwnerWindow;
+            //             (ownerWindow, directOwnerWindow) = GetOwnerWindows(viewModalOwnedWindows, viewNonModalOwnedWindows);
+            //
+            //             HandleModalWindowOpen(viewModalOwnedWindows, viewNonModalOwnedWindows, visibleOwnerWindow: ownerWindow, directOwnerWindow);
+            //
+            //             Closed += delegate {
+            //                 HandleModalWindowClose(viewModalOwnedWindows, viewNonModalOwnedWindows, visibleOwnerWindow: ownerWindow, directOwnerWindow);
+            //             };
+            //         }
+            //     } else {
+            //         if (topLevelView != null) {
+            //             var viewNonModalOwnedWindows = GetTopLevelViewOwnedWindows(nonModalWindowsPerView);
+            //             viewNonModalOwnedWindows.Add(this);
+            //
+            //             Closed += delegate { viewNonModalOwnedWindows.Remove(this); };
+            //         }
+            //     }
+            //
+            //     SetupNativeTopMenuIfNeeded();
+            //
+            //     ownerWindow ??= GetDefaultOwnerWindow();
+            // }
+            //
+            // ResetPositionIfUnreachableWindow(ownerWindow);
+            //
+            // showCalled = true;
+            // isShowPending = false;
+            // SetShowActivated();
+            //
+            // void OnOwnerWindowStateChanged() {
+            //     if (ownerWindow?.WindowState != WindowStateAvalonia.Minimized && !IsVisible) {
+            //         ((BaseWindow)ownerWindow).WindowStateChanged -= OnOwnerWindowStateChanged;
+            //         SafeShowCore(ownerWindow);
+            //     }
+            // }
+            //
+            // if (ownerWindow?.WindowState == WindowStateAvalonia.Minimized && ownerWindow is BaseWindow ownerBaseWindow) {
+            //     ownerBaseWindow.WindowStateChanged += OnOwnerWindowStateChanged;
+            //     Closed += delegate {
+            //         ownerBaseWindow.WindowStateChanged -= OnOwnerWindowStateChanged;
+            //     };
+            // } else {
+            //     SafeShowCore(ownerWindow);
+            // }
+
+            SafeShowCore(ownerWindow);
+
+        }
+        private static bool IsWindowValid(Window window) => window?.IsVisible == true && !(window is DialogWindow dialog);
+
+
+       private void SafeShowCore(Window ownerWindow = null) {
+           if (IsWindowValid(ownerWindow)) {
+               ShowInTaskbar = false;
+               Show(ownerWindow);
+           } else {
+               Show();
+           }
+       }
+
+
+       public void DisplayModal(bool applicationWideModal) {
+                    ShowWindow(true);
+        }
+
+       private void ShowWindow(bool showAsModal) {
+         //   SetupWindowDimensions();
+         //   SetupWindowOptions();
+         //   SetupWindowPosition();
+            IsModal = showAsModal;
+
+           SafeShow();
+        }
+
         private void OnTopLevelViewShown() {
             Show(ParentWindow);
         }
@@ -67,9 +156,14 @@ namespace AvaloniaHangProject.Views {
             Hide();
         }
 
-        public void ShowWindow() {
+        public void ShowDialog() {
             SubscribeTopLevelViewShowHideEvents();
-            Show(ParentWindow);
+            ShowDialog(ParentWindow);
+        }
+
+        public void ShowNonModal() {
+            SubscribeTopLevelViewShowHideEvents();
+            Show();
         }
 
         protected override void OnClosed(EventArgs e) {

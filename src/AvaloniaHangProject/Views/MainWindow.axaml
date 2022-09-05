@@ -12,9 +12,54 @@
         Background="Transparent"
         ExtendClientAreaToDecorationsHint="True">
 
+
     <Design.DataContext>
         <viewModels:MainWindowViewModel />
     </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{DynamicResource PanelLevel1Brush}"/>
+        </Style>
+        <Style Selector="Window:win:maximized /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Margin" Value="{Binding MaximizedMargin, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </Style>
+        <Style Selector="CaptionButtons /template/ Panel#PART_FullScreenButton">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        <Style Selector="CaptionButtons /template/ Panel#PART_MinimiseButton">
+            <Setter Property="IsVisible" Value="{Binding AllowMinimize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </Style>
+        <Style Selector="CaptionButtons /template/ Panel#PART_RestoreButton">
+            <Setter Property="IsVisible" Value="{Binding AllowRestoreOrMaximize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </Style>
+        <Style Selector="CaptionButtons /template/ Panel#PART_CloseButton">
+            <Setter Property="IsVisible" Value="{Binding ShowClose, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Setter Property="IsEnabled" Value="{Binding EnableClose, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </Style>
+        <Style Selector=":osx CaptionButtons">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        <Style Selector="TitleBar /template/ Border TextBlock#PART_TitleHolder">
+            <Setter Property="IsVisible" Value="{Binding ShowTitleBar, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Setter Property="Text" Value="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+        </Style>
+        <Style Selector=":win TitleBar /template/ Border TextBlock#PART_TitleHolder">
+            <Setter Property="Margin" Value="16 4 160 0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="600"/>
+        </Style>
+        <Style Selector=":osx TitleBar /template/ Border TextBlock#PART_TitleHolder">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="80 4 80 0"/>
+        </Style>
+    </Window.Styles>
+
+
 
     <Panel>
         <Panel.Styles>

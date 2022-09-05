@@ -20,10 +20,12 @@ namespace AvaloniaHangProject.ViewModels {
                         MinWidth = 500,
                         Position = new PixelPoint(500, 500)
                     };
+
                     var innerContent = new Border() { BorderBrush = new SolidColorBrush(Colors.Red), BorderThickness = new Thickness(3)};
 
-                    dialogWindow.Content = innerContent;
-                    dialogWindow.ShowWindow();
+                    dialogWindow.Content = new Button() { Name = "Test Button", Content = "Open Modal", Command = OnClickButtonCommand(parent)};
+                    //dialogWindow.DisplayModal(false);
+                    dialogWindow.ShowDialogSync(parent);
 
                     dialogWindows.Add(dialogWindow);
                 }
@@ -34,6 +36,25 @@ namespace AvaloniaHangProject.ViewModels {
                 () => {
                     ((MainWindow)parent).AddTab(++captionsCounter);
                 });
+        }
+
+        public ICommand OnClickButtonCommand(Window parent) {
+            return ReactiveCommand.Create(() => {
+                var dialogWindow = new DialogWindow(parent, null) {
+                    MinHeight = 500,
+                    MinWidth = 500,
+                    Position = new PixelPoint(500, 500)
+                };
+
+                dialogWindow.Content = new Button() { Name = "Button", Content = "Proceed Anyway", Command = OnClickButtonCommand2(dialogWindow)};
+                dialogWindow.Show();
+            });
+        }
+
+        public ICommand OnClickButtonCommand2(Window parent) {
+            return ReactiveCommand.Create(() => {
+
+            });
         }
 
         public ICommand OpenWindowCommand { get; }
